@@ -44,11 +44,15 @@ void			ft_parse_pixel(t_cor pix, t_param par, t_lib *data)
 	if (par.state == 0 || par.state == 4)
 		ft_new_cor(&par.add, pnt.x, pnt.y);
 	ft_new_tsl(&tsl, exp(-(sqrt(pnt.x * pnt.x + pnt.y * pnt.y))), 1.0, 1.0);
+	tsl.t += data->p.color;
 	while (i++ <= data->p.precision && sqrt(pnt.x * pnt.x + pnt.y * pnt.y) < 4)
 		ft_carre(&pnt, &par, &tsl);
 	tsl.t /= data->p.precision;
-	if (tsl.t > 1.0)
-		tsl.t = 0.99;
+	if (tsl.t >= 1.0)
+		tsl.t -= 0.99;
+	else if (tsl.t <= 0.0)
+		tsl.t += 0.99;
+	tsl.l += data->p.lum;
 	ft_put_pixel(data, pix.x, pix.y, mlx_get_color_value(data->env.win,
 					ft_convert_rvb(ft_tsl_to_rvb(tsl))));
 }

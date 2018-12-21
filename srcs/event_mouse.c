@@ -35,20 +35,6 @@ int		param_julia(int x, int y, t_lib *data)
 	return (0);
 }
 
-void	key_precision(int keycode, double *prec)
-{
-	*prec += (keycode == 82) ? 2.0 : -2.0;
-}
-
-void	key_zoom(int keycode, double *zoom)
-{
-	if (keycode == 69 || keycode == 78)
-	{
-		if (*zoom * 0.7 > 0)
-			*zoom *= (keycode == 78 ? 1.3 : 0.7);
-	}
-}
-
 int		mouse_param(int mouse_key, int x, int y, t_lib *data)
 {
 	if (mouse_key == 1)

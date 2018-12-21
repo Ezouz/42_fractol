@@ -25,10 +25,30 @@ void	init_event(char *fractal, t_lib *data)
 		else
 		{
 			ft_putstr("usage: ./fractol [julia][mandelbrot][burningship]\n");
+			mlx_destroy_image(data->env.mlx, data->env.i.img);
+			mlx_destroy_window(data->env.mlx, data->env.win);
+			free(data);
 			exit(1);
 		}
 	}
 	load_state(data);
+}
+
+void	load_state(t_lib *data)
+{
+	if (data->p.state == 1)
+		ft_new_cor(&data->p.add, 0.285, 0.01);
+	else if (data->p.state == 2)
+		ft_new_cor(&data->p.add, -0.123, 0.745);
+	else if (data->p.state == 3)
+		ft_new_cor(&data->p.add, -0.038088, 0.97);
+	else
+		ft_new_cor(&data->p.add, 0.0, 0.0);
+	data->p.precision = 45.0;
+	data->p.zoom = 2.0;
+	data->p.color = 0.0;
+	data->p.lum = 0.0;
+	ft_new_cor(&data->p.ctr, 0.0, 0.0);
 }
 
 void	init_hooks(t_lib *data)

@@ -22,7 +22,7 @@ int		main(int ac, char **av)
 		exit(1);
 	}
 	if (!(data = (t_lib*)malloc(sizeof(t_lib))))
-		return (0);
+		return (1);
 	data->env.mlx = mlx_init();
 	data->env.win = mlx_new_window(data->env.mlx, WX, WY, "fractol");
 	data->env.i.img = mlx_new_image(data->env.mlx, WX, WY);

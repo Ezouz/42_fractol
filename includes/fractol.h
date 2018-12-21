@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   fractol.h                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ehouzard <ehouzard@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/12/21 11:39:49 by ehouzard          #+#    #+#             */
+/*   Updated: 2018/12/21 11:40:03 by ehouzard         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef FRACTOL_H
 # define FRACTOL_H
 
@@ -36,6 +48,8 @@ typedef	struct		s_param
 	int				state;
 	t_cor			ctr;
 	t_cor			add;
+	double			lum;
+	double			color;
 }					t_param;
 
 typedef struct		s_thr
@@ -86,13 +100,12 @@ void				ft_put_pixel(t_lib *data, int x, int y, int color);
 
 void				init_event(char *fractal, t_lib *data);
 void				init_hooks(t_lib *data);
+void				load_state(t_lib *data);
 int					to_window(t_lib *data);
 
-void				load_state(t_lib *data);
 int					keyboard_event(int keycode, t_lib *data);
-void				key_move(int keycode, double *x, double *y, double zoom);
+void				key_param(int keycode, t_lib *data);
 void				key_zoom(int keycode, double *zoom);
-void				key_precision(int keycode, double *prec);
 int					mouse_param(int z, int x, int y, t_lib *data);
 int					param_julia(int x, int y, t_lib *data);
 

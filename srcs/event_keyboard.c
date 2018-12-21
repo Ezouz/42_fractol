@@ -6,33 +6,39 @@
 /*   By: ehouzard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/05 15:28:58 by ehouzard          #+#    #+#             */
-/*   Updated: 2018/12/18 20:04:57 by ehouzard         ###   ########.fr       */
+/*   Updated: 2018/12/21 11:38:37 by ehouzard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
 
-void	load_state(t_lib *data)
+void	key_zoom(int keycode, double *zoom)
 {
-	if (data->p.state == 1)
-		ft_new_cor(&data->p.add, 0.285, 0.01);
-	else if (data->p.state == 2)
-		ft_new_cor(&data->p.add, -0.123, 0.745);
-	else if (data->p.state == 3)
-		ft_new_cor(&data->p.add, -0.038088, 0.97);
-	else
-		ft_new_cor(&data->p.add, 0.0, 0.0);
-	data->p.precision = 45.0;
-	data->p.zoom = 2;
-	ft_new_cor(&data->p.ctr, 0.0, 0.0);
+	if (keycode == 69 || keycode == 78)
+	{
+		if (*zoom * 0.7 > 0)
+			*zoom *= (keycode == 78 ? 1.3 : 0.7);
+	}
 }
 
-void	key_move(int keycode, double *x, double *y, double zoom)
+void	key_param(int keycode, t_lib *data)
 {
-	if (keycode == 123 || keycode == 124)
-		*x += (keycode == 123 ? -0.1 * zoom : 0.1 * zoom);
+	if (keycode == 83 || keycode == 86)
+		data->p.precision += (keycode == 86) ? 2.0 : -2.0;
+	else if (keycode == 84 || keycode == 87)
+		data->p.lum += (keycode == 84 ? -1.0 : 1.0);
+	else if (keycode == 85 || keycode == 88)
+		data->p.color -= (keycode == 85 ? -1.0 : 1.0);
+	else if (keycode == 123 || keycode == 124)
+		data->p.ctr.x += (keycode == 123) ? -0.1 * data->p.zoom
+											: 0.1 * data->p.zoom;
 	else if (keycode == 125 || keycode == 126)
-		*y -= (keycode == 125 ? -0.1 * zoom : 0.1 * zoom);
+		data->p.ctr.y -= (keycode == 125) ? -0.1 * data->p.zoom
+											: 0.1 * data->p.zoom;
+	else if (keycode == 76)
+		data->p.lum = 0.0;
+	else if (keycode == 65)
+		data->p.color = 0.0;
 }
 
 int		keyboard_event(int keycode, t_lib *data)
@@ -49,14 +55,14 @@ int		keyboard_event(int keycode, t_lib *data)
 		data->p.state += (data->p.state < 4) ? 1 : -4;
 		load_state(data);
 	}
-	else if (keycode >= 123 && keycode <= 126)
-		key_move(keycode, &data->p.ctr.x, &data->p.ctr.y, data->p.zoom);
-	else if (keycode == 78)
-		key_zoom(78, &data->p.zoom);
-	else if (keycode == 69)
-		key_zoom(69, &data->p.zoom);
-	else if (keycode == 82 || keycode == 83)
-		key_precision(keycode, &data->p.precision);
+	else if ((keycode >= 123 && keycode <= 126) ||
+				(keycode == 65 || keycode == 76) ||
+				(keycode >= 83 && keycode <= 88))
+	{
+		key_param(keycode, data);
+	}
+	else if (keycode == 69 || keycode == 78)
+		key_zoom(keycode, &data->p.zoom);
 	if (!to_window(data))
 		return (1);
 	return (0);
