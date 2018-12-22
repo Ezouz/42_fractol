@@ -12,25 +12,26 @@
 
 #include "fractol.h"
 
+int		check_arg(char *fractal)
+{
+	if (ft_strcmp(fractal, "burningship")
+		&& ft_strcmp(fractal, "julia")
+		&& ft_strcmp(fractal, "mandelbrot"))
+	{
+		ft_putstr("usage: ./fractol [julia][mandelbrot][burningship]\n");
+		return (1);
+	}
+	return (0);
+}
+
 void	init_event(char *fractal, t_lib *data)
 {
-	if (ft_strcmp(fractal, " "))
-	{
-		if (!ft_strcmp(fractal, "burningship"))
-			data->p.state = 4;
-		else if (!ft_strcmp(fractal, "julia"))
-			data->p.state = 1;
-		else if (!ft_strcmp(fractal, "mandelbrot"))
-			data->p.state = 0;
-		else
-		{
-			ft_putstr("usage: ./fractol [julia][mandelbrot][burningship]\n");
-			mlx_destroy_image(data->env.mlx, data->env.i.img);
-			mlx_destroy_window(data->env.mlx, data->env.win);
-			free(data);
-			exit(1);
-		}
-	}
+	if (!ft_strcmp(fractal, "burningship"))
+		data->p.state = 4;
+	else if (!ft_strcmp(fractal, "julia"))
+		data->p.state = 1;
+	else if (!ft_strcmp(fractal, "mandelbrot"))
+		data->p.state = 0;
 	load_state(data);
 }
 
@@ -46,8 +47,6 @@ void	load_state(t_lib *data)
 		ft_new_cor(&data->p.add, 0.0, 0.0);
 	data->p.precision = 45.0;
 	data->p.zoom = 2.0;
-	data->p.color = 0.0;
-	data->p.lum = 0.0;
 	ft_new_cor(&data->p.ctr, 0.0, 0.0);
 }
 

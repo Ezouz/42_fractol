@@ -6,7 +6,7 @@
 /*   By: ehouzard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/05 15:28:58 by ehouzard          #+#    #+#             */
-/*   Updated: 2018/12/21 11:38:37 by ehouzard         ###   ########.fr       */
+/*   Updated: 2018/12/21 12:06:26 by ehouzard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,20 +24,23 @@ void	key_zoom(int keycode, double *zoom)
 void	key_param(int keycode, t_lib *data)
 {
 	if (keycode == 83 || keycode == 86)
-		data->p.precision += (keycode == 86) ? 2.0 : -2.0;
+	{
+		if (data->p.precision < 300)
+			data->p.precision += (keycode == 83) ? -2.0 : 2.0;
+	}
 	else if (keycode == 84 || keycode == 87)
-		data->p.lum += (keycode == 84 ? -1.0 : 1.0);
+		data->p.lum += (keycode == 87 ? -0.3 : 0.3);
 	else if (keycode == 85 || keycode == 88)
-		data->p.color -= (keycode == 85 ? -1.0 : 1.0);
+		data->p.color -= (keycode == 85 ? -0.3 : 0.3);
 	else if (keycode == 123 || keycode == 124)
 		data->p.ctr.x += (keycode == 123) ? -0.1 * data->p.zoom
 											: 0.1 * data->p.zoom;
 	else if (keycode == 125 || keycode == 126)
 		data->p.ctr.y -= (keycode == 125) ? -0.1 * data->p.zoom
 											: 0.1 * data->p.zoom;
-	else if (keycode == 76)
-		data->p.lum = 0.0;
 	else if (keycode == 65)
+		data->p.lum = 0.0;
+	else if (keycode == 76)
 		data->p.color = 0.0;
 }
 
@@ -47,7 +50,6 @@ int		keyboard_event(int keycode, t_lib *data)
 	{
 		mlx_destroy_image(data->env.mlx, data->env.i.img);
 		mlx_destroy_window(data->env.mlx, data->env.win);
-		free(data);
 		exit(0);
 	}
 	else if (keycode == 49)

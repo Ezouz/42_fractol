@@ -12,17 +12,8 @@
 
 #include "fractol.h"
 
-int		main(int ac, char **av)
+static int	fractol(t_lib *data, char **av)
 {
-	t_lib	*data;
-
-	if (ac != 2)
-	{
-		ft_putstr("usage: ./fractol [julia][mandelbrot][burningship]\n");
-		exit(1);
-	}
-	if (!(data = (t_lib*)malloc(sizeof(t_lib))))
-		return (1);
 	data->env.mlx = mlx_init();
 	data->env.win = mlx_new_window(data->env.mlx, WX, WY, "fractol");
 	data->env.i.img = mlx_new_image(data->env.mlx, WX, WY);
@@ -34,4 +25,18 @@ int		main(int ac, char **av)
 		return (1);
 	mlx_loop(data->env.mlx);
 	return (0);
+}
+
+int			main(int ac, char **av)
+{
+	t_lib	data;
+
+	if (ac != 2)
+	{
+		ft_putstr("usage: ./fractol [julia][mandelbrot][burningship]\n");
+		return (1);
+	}
+	if (check_arg(av[1]))
+		return (1);
+	return (fractol(&data, av));
 }
